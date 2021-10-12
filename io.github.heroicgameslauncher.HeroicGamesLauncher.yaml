@@ -1,0 +1,85 @@
+app-id: io.github.heroicgameslauncher.HeroicGamesLauncher
+runtime: org.freedesktop.Platform
+runtime-version: '21.08'
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.node16
+base: org.electronjs.Electron2.BaseApp
+base-version: '21.08'
+rename-icon: heroic
+command: start-heroicgameslauncher.sh
+separate-locales: false
+finish-args:
+  - --share=ipc
+  - --device=dri
+  - --socket=x11
+  - --socket=pulseaudio
+  - --share=network
+  - --filesystem=home
+cleanup:
+  - /etc
+  - /include
+  - /share/man
+  - /share/info
+  - /share/aclocal
+  - /share/awk
+  - /share/runtime
+modules:
+  - name: gawk
+    sources:
+      - type: archive
+        url: https://ftp.gnu.org/pub/gnu/gawk/gawk-5.1.0.tar.xz
+        sha256: cf5fea4ac5665fd5171af4716baab2effc76306a9572988d5ba1078f196382bd
+  - name: curl
+    config-opts:
+      - --with-openssl
+      - --disable-libcurl-option
+    sources:
+        - type: archive
+          url: https://github.com/curl/curl/releases/download/curl-7_79_1/curl-7.79.1.tar.bz2
+          sha256: de62c4ab9a9316393962e8b94777a570bb9f71feb580fb4475e412f2f9387851
+  - name: HGL
+    buildsystem: simple
+    build-options:
+      append-path: /usr/lib/sdk/node16/bin
+      env:
+        npm_config_nodedir: /usr/lib/sdk/node14
+        ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+        TMPDIR: /run/build/HGL/flatpak-node/tmp
+        ELECTRON_CACHE: /run/build/HGL/flatpak-node/cache/electron
+        XDG_CACHE_HOME: /run/build/HGL/flatpak-node/cache
+    build-commands:
+      - HOME=$PWD yarn config --offline set yarn-offline-mirror $FLATPAK_BUILDER_BUILDDIR/flatpak-node/yarn-mirror
+      - yarn install --offline
+      - . flatpak-node/electron-builder-arch-args.sh; yarn --offline dist $ELECTRON_BUILDER_ARCH_ARGS --dir
+      - cp -a dist/linux*unpacked /app/hgl
+      - install -Dm755 -t /app/bin start-heroicgameslauncher.sh
+    post-install:
+      - install -D io.github.heroicgameslauncher.HeroicGamesLauncher.desktop -t  /app/share/applications/
+      - install -D io.github.heroicgameslauncher.HeroicGamesLauncher.metainfo.xml -t /app/share/metainfo/
+    sources:
+      - type: git
+        url:  https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher.git
+        tag: v1.10.2
+        commit: b3418e38f76a7182ad8b87a994f1018f34d7ee39
+      - type: script
+        dest-filename: start-heroicgameslauncher.sh
+        commands:
+          - export TMPDIR=$XDG_RUNTIME_DIR/app/$FLATPAK_ID
+          - zypak-wrapper.sh /app/hgl/heroic
+      - generated-sources.json
+      - type: file
+        path: io.github.heroicgameslauncher.HeroicGamesLauncher.desktop
+      - type: file
+        path: io.github.heroicgameslauncher.HeroicGamesLauncher.metainfo.xml
+# hgl generates icons from a icns file, its simpler to take them from a deb
+  - name: icons
+    buildsystem: simple
+    build-commands:
+      - ar -x heroic_1.10.2_amd64.deb
+      - tar -xvf data.tar.xz
+      - cp -r usr/share/icons /app/share/icons
+    sources:
+      - type: file
+        url: https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher/releases/download/v1.10.2/heroic_1.10.2_amd64.deb
+        sha256: b7e3f91bdf7700304030707fb291a94dbb0575da71425fc68cdb31b3f36a779c

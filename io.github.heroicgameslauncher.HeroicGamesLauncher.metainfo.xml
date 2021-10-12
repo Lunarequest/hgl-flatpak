@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.heroicgameslauncher.HeroicGamesLauncher</id>
+  
+  <name>Heroic Games Launcher</name>
+  <summary>A Native GUI Epic Games Launcher for Linux, Windows and Mac. </summary>
+  <url type="homepage">https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher#readme</url>
+
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>AGPL-3.0-or-later</project_license>
+  
+  <description>
+    <p>
+      Heroic is an Open Source Game Launcher for Linux, Windows and MacOS (Limited to Windows games using Wine/Crossover - tested only on Intel and on 10.14). Right now it supports launching games from the Epic Games Store using Legendary, a CLI alternative to the Epic Games Launcher. Heroic is built with Web Technologies like: TypeScript, React, NodeJS and Electron.
+    </p>
+  </description>
+  <content_rating type="oars-1.1">
+    <content_attribute id="violence-cartoon">moderate</content_attribute>
+    <content_attribute id="violence-fantasy">moderate</content_attribute>
+    <content_attribute id="violence-realistic">moderate</content_attribute>
+    <content_attribute id="violence-bloodshed">moderate</content_attribute>
+    <content_attribute id="money-purchasing">intense</content_attribute>
+  </content_rating>
+  <launchable type="desktop-id">io.github.heroicgameslauncher.HeroicGamesLauncher.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <caption>Login page</caption>
+      <image>https://user-images.githubusercontent.com/26871415/127302922-bd7e8f8b-c190-4424-bf29-2e5e64a3a501.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Game library</caption>
+      <image>https://user-images.githubusercontent.com/26871415/128629054-78f1ce34-cd1d-4502-97a3-664ffbb5120e.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Play Halcyon 6 page</caption>
+      <image>https://user-images.githubusercontent.com/26871415/127303257-a51016cd-acaa-4f0a-a171-0499c470fd04.png</image>
+    </screenshot>
+  </screenshots>
+  <releases>
+    <release version="v1.10.2" date="2020-10-12">
+        <description>
+            <p>General</p>
+            <ul>
+                <li>Heroic will show Launch options for games that support it. Eg: Ark.</li>
+                <li>Heroic will try to launch the game even if offline and will also show information if the game can run offline or not on the Game Page.</li>
+                <li>It's possible to provide an alternative legendary binary for Heroic to use.</li>
+            </ul>
+            <p>BugFixes</p>
+            <ul>
+                <li>Fixed an issue with games that have Selective Download not downloading the whole game.</li>
+                <li>Fixed an issue where the integrated store wasn't opening the login popup.</li>
+                <li>Other small fixes and translations updates.</li>
+            </ul>
+        </description>
+      </release>
+  </releases>
+</component>
